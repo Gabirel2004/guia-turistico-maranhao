@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+
+h1 {
+  font-size: 2rem;
+  font-family: var(--font-montserratt);
+  font-weight: 700; 
+  color: #333;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -20,7 +28,7 @@
 }
 
 body {
-  background: var(--background);
+  background:  #f9e3e3;
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
