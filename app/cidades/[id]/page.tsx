@@ -15,7 +15,7 @@ type PageProps = {
 // A página agora é um componente de servidor, responsável apenas por buscar dados
 export default async function PaginaDaCidade({ params }: PageProps) {
   
-  const awaiteparams = await params; // Corrigido para usar await corretamente
+  const awaiteparams = await params; 
 
   const cidade = await prisma.cidade.findUnique({
     where: {

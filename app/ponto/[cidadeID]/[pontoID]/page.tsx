@@ -14,13 +14,10 @@ type PageProps = {
 
 // Esta página é um Componente de Servidor, por isso pode ser async
 export default async function PontoTuristicoPage({ params }: PageProps) {
-  // CORREÇÃO: Usamos os nomes corretos ao extrair os valores
-  const { cidadeID, pontoID } = params;
+  const { cidadeID, pontoID } = await params;
 
-  // Buscamos o ponto turístico específico no banco de dados
   const ponto = await prisma.pontoTuristico.findFirst({
     where: {
-      // CORREÇÃO: Usamos as variáveis corretas na consulta
       id: pontoID,
       cidadeId: cidadeID,
     },
