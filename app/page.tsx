@@ -1,22 +1,38 @@
-// app/page.tsx
-import { cidades } from '@/data/Cidades';
-import ListaCidades from './componentes/ListaCidades'; // 1. Importando o novo componente
+// Em: app/page.tsx
+
+// 1. Voltamos a usar o nosso ficheiro 'lib/prisma' que gere a conexão
+import prisma from '@/lib/prisma';
+import ListaCidades from './componentes/ListaCidades'; 
 
 export default async function Home() {
-  // como ainda nao coloquei um banco de dados vai fica assim
-  const CidadesOrdenados = [...cidades].sort((a, b) => a.nome.localeCompare(b.nome));
+  // 2. CORREÇÃO: Usamos 'select' para ir buscar apenas os campos necessários.
+  // Isto resolve o erro de tipo e torna a consulta mais eficiente.
+  const cidades = await prisma.cidade.findMany({
+    select: {
+      id: true,
+      nome: true,
+      imagem: true,
+      descricao: true,
+      tipo: true, // Adicionado para consistência com o tipo
+      localizacao: true,
+      melhor_epoca: true,
+      pontos_turisticos: true, // Adicionado para consistência com o tipo
+    },
+    orderBy: {
+      nome: 'asc',
+    },
+  });
 
   return (
     <>
-      {/* Cabeçalho */}
       <header className="text-center p-4 mb-5 bg-light text-dark">
-        <h1 className="display-4 ">Guia Turisco do Maranhão</h1>
+        <h1 className="display-4 ">Guia Turístico do Maranhão</h1>
         <p className="lead">Explore os encantos do nosso estado.</p>
       </header>
 
-      {/* Container principal para o conteúdo */}
       <main className="container">
-        <ListaCidades cidades = {CidadesOrdenados} />
+        {/* Agora, os dados passados para 'ListaCidades' são simples e compatíveis */}
+        <ListaCidades cidades={cidades} />
       </main>
 
       <footer className="text-center text-muted p-4 mt-5">

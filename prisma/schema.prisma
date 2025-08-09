@@ -1,52 +1,37 @@
 // Este é o seu ficheiro de Schema do Prisma.
-// Ele define os modelos do seu banco de dados e as suas relações.
 
 // 1. Configuração do Cliente e da Fonte de Dados
 generator client {
   provider = "prisma-client-js"
-  output   = "../node_modules/.prisma/client"
 }
 
+// SÓ PODE HAVER UM BLOCO 'datasource'
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DATABASE_URL")  // Adicione esta linha para Supabase
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
-// 2. Modelo da Cidade
-// Cada "model" representa uma tabela no seu banco de dados.
+
 model Cidade {
-  // id: Chave primária, gerada automaticamente como um CUID (ID único).
-  id            String   @id @default(cuid())
-  // nome, tipo, imagem, descricao: Campos de texto obrigatórios.
-  nome          String
-  tipo          String
-  imagem        String
-  descricao     String   @db.Text // @db.Text permite textos mais longos
-  // localizacao, melhor_epoca: Campos de texto opcionais (podem ser nulos).
-  localizacao   String?
-  melhor_epoca  String?
-  
-  // Relação: Uma Cidade pode ter muitos Pontos Turísticos.
+  id                String           @id @default(cuid())
+  nome              String           @unique
+  tipo              String
+  imagem            String
+  descricao         String           @db.Text
+  localizacao       String?
+  melhor_epoca      String?
   pontos_turisticos PontoTuristico[]
-
-  // Timestamps: Guardam a data de criação e atualização automaticamente.
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
 }
 
-// 3. Modelo do Ponto Turístico
 model PontoTuristico {
-  id            String   @id @default(cuid())
-  nome          String
-  descricao     String   @db.Text
-  imagem        String
-  localizacao   String?
-
-  // Relação: Cada Ponto Turístico pertence a uma Cidade.
-  // 'cidadeId' é a chave estrangeira que liga ao 'id' da Cidade.
-  cidadeId      String
-  cidade        Cidade   @relation(fields: [cidadeId], references: [id])
-
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id          String   @id @default(cuid())
+  nome        String
+  descricao   String   @db.Text
+  imagem      String
+  localizacao String?
+  cidadeId    String
+  cidade      Cidade   @relation(fields: [cidadeId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

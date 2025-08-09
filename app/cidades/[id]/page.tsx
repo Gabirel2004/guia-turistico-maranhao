@@ -1,44 +1,49 @@
-// Em: app/locais/[id]/page.tsx
+// Em: app/cidades/[id]/page.tsx
 
-import { cidades } from '@/data/Cidades';
-import Link from 'next/link';
+import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
+import Link from 'next/link';
+// Importamos o nosso componente de cliente que terá a parte interativa
+import ListaDePontos from '../../componentes/ListaDePontos';
 
-// Definimos os tipos de dados que a página vai receber
 type PageProps = {
   params: {
-    nome: string;
+    id: string;
   };
 };
 
-// Função para encontrar os dados do local usando o ID
-function getCidadeData(id: string) {
-  const cidade = cidades.find((item) => item.nome === nome);
+// A página agora é um componente de servidor, responsável apenas por buscar dados
+export default async function PaginaDaCidade({ params }: PageProps) {
+  
+  const awaiteparams = await params; // Corrigido para usar await corretamente
 
+  const cidade = await prisma.cidade.findUnique({
+    where: {
+      id: awaiteparams.id,
+    },
+    include: {
+      // Pedimos ao Prisma para incluir os pontos turísticos relacionados
+      pontos_turisticos: true,
+    },
+  });
+
+  // Se a cidade não for encontrada, mostramos um erro 404
   if (!cidade) {
     notFound();
   }
-  return cidade;
-}
-
-// O componente da página de detalhes
-export default function DetalhesPage({ params }: PageProps) {
-  const cidade = getCidadeData(params.nome);
 
   return (
     <>
-      {/* O cabeçalho e o rodapé podem ser movidos para um componente de Layout no futuro */}
       <header className="text-center p-4 mb-5 bg-light text-dark">
         <h1 className="display-4">Guia Turístico do Maranhão</h1>
-        <p className="lead">Explore os encantos, sabores e tradições do nosso estado.</p>
+        <p className="lead">Explore os encantos do nosso estado.</p>
       </header>
 
       <main className="container my-5">
-        {/* Usamos um card para envolver todo o conteúdo e adicionar uma sombra */}
-        <div className="card border-0 shadow-lg">
+        {/* Bloco Principal com os Detalhes da Cidade */}
+        <div className="card border-0 shadow-lg mb-5">
           <div className="row g-0">
-            
-            {/* Coluna da Esquerda: Imagem */}
+            {/* Coluna da Esquerda: Imagem da Cidade */}
             <div className="col-lg-6">
               <img
                 src={cidade.imagem}
@@ -48,14 +53,13 @@ export default function DetalhesPage({ params }: PageProps) {
               />
             </div>
 
-            {/* Coluna da Direita: Informações */}
+            {/* Coluna da Direita: Informações da Cidade */}
             <div className="col-lg-6 d-flex flex-column p-5">
               <h1 className="display-4 fw-bold">{cidade.nome}</h1>
               <p className="lead text-muted mb-4">{cidade.tipo}</p>
-
               <p className="fs-5 mb-4">{cidade.descricao}</p>
               
-              <div className="card bg-light border-0 mb-4">
+              <div className="card bg-light border-0">
                 <div className="card-body">
                   <h5 className="card-title fw-bold">Detalhes</h5>
                   <ul className="list-unstyled mb-0">
@@ -65,25 +69,26 @@ export default function DetalhesPage({ params }: PageProps) {
                     {cidade.melhor_epoca && (
                       <li><strong>Melhor Época:</strong> {cidade.melhor_epoca}</li>
                     )}
+                     <li>
+                       <strong>Pontos Turísticos:</strong> {cidade.pontos_turisticos.length}
+                     </li>
                   </ul>
                 </div>
               </div>
-
-              {/* Botão de Ação e Link para Voltar */}
-              <div className="mt-auto">
-             <Link href= {`/pontos_turisticos/${cidade.id}`} className="btn btn-primary btn-lg w-100 mb-3">
-                  Explorar Pontos Turísticos
-                </Link>
-                <div className="text-center">
-                  <Link href="/" className="text-decoration-none text-muted small">
-                    &larr; Voltar para a lista
-                  </Link>
-                </div>
-              </div>
             </div>
-            
-
           </div>
+        </div>
+
+        {/* Novo Bloco: Lista de Pontos Turísticos da Cidade */}
+        <div className="mt-5">
+            <h2 className="text-center display-5 mb-4">Explore {cidade.nome}</h2>
+            <ListaDePontos pontos={cidade.pontos_turisticos} cidadeId={cidade.id} />
+        </div>
+        
+        <div className="text-center mt-5">
+          <Link href="/" className="btn btn-primary btn-lg">
+            &larr; Ver Todas as Cidades
+          </Link>
         </div>
       </main>
 

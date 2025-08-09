@@ -1,80 +1,79 @@
-// Em: app/componentes/ListaLocais.tsx
+// Em: app/componentes/ListaCidades.tsx
 
-"use client";
+"use client"; // Este componente precisa de interatividade (useState), por isso é um Componente de Cliente.
 
 import { useState } from 'react';
 import Link from 'next/link';
 
 
-// Definimos o tipo de dados para um único local.
-type cidade = {
+// A convenção para nomes de tipos é usar PascalCase (ex: Cidade)
+type PontoTuristico = {
+  id: string; // Adicionado para uma chave única
+  nome: string;
+  descricao: string;
+  imagem: string;
+};
+
+type Cidade = {
   id: string;
   nome: string;
   tipo: string;
   imagem: string;
   descricao: string;
-  localizacao?: string;
-  melhor_epoca?: string;
-  pontos_turisticos:
-    {
-      nome: string;
-      descricao: string;
-      imagem: string;
-      localizacao?: string;
-    } [];
+  pontos_turisticos: PontoTuristico[];
 };
 
-// CORREÇÃO: Criamos um tipo específico para as propriedades que o componente espera.
-type ListaLocaisProps = {
-  cidades: cidade[];
+// Definimos um tipo para as propriedades que este componente recebe
+type ListaCidadesProps = {
+  cidades: Cidade[]; // Ele espera receber uma lista de cidades
 };
 
-// Usamos o novo tipo 'ListaLocaisProps' para definir as propriedades do componente.
-export default function ListaCidades({ cidades }: ListaLocaisProps) {
+// O nome do componente foi ajustado para refletir que ele lista cidades
+export default function ListaCidades({ cidades }: ListaCidadesProps) {
   const [termoPesquisa, setTermoPesquisa] = useState('');
 
-  const cidadesFiltrados = cidades.filter((cidades) =>
-    cidades.nome.toLowerCase().includes(termoPesquisa.toLowerCase())
+  // A lógica de filtro agora procura pelo nome da cidade
+  const cidadesFiltradas = cidades.filter((cidade) =>
+    cidade.nome.toLowerCase().includes(termoPesquisa.toLowerCase())
   );
-
-  const URL_erro = (e: React.SyntheticEvent<HTMLImageElement,Event>) => {
-    e.currentTarget.onerror = null; // Remove o manipulador de erro para evitar loops
-    e.currentTarget.src = 'https://placehold.co/400x400/ccc/fff?text=Imagem+Indisponível'; // Define uma imagem padrão
-  };
 
   return (
     <div>
+      {/* Barra de Pesquisa */}
       <div className="mb-4">
         <input
           type="text"
           value={termoPesquisa}
           onChange={(e) => setTermoPesquisa(e.target.value)}
           className="form-control form-control-lg"
-          placeholder="Pesquisar por nome do local..."
+          placeholder="Pesquisar por cidade..."
         />
       </div>
 
+      {/* Grelha de Cidades */}
       <div className="row">
-        {cidadesFiltrados.length > 0 ? (
-          cidadesFiltrados.map((cidade) => (
-            <div key={cidade.id} className = "col-12 col-md-6 col-lg-4 mb-4 d-flex">
-              <div className="card h-100 shadow-sm w-100 d-flex flex-column">
-                <div className="card h-100 shadow-sm w-100">
-                  <img
-                    src = {cidade.imagem}
-                    alt={cidade.nome}
-                    className="card-img-top"
-                    style={{ height: '200px', objectFit: 'cover' }}
-                    onError={URL_erro}
-                  />  
-                  <div className='card-body d-flex flex-column'>  
-                    <h5 className="card-title">{cidade.nome}</h5>
-                    <p className="card-text">{cidade.descricao.substring(0, 120)}...</p>
-                    <div className="text-center mt-auto">
-                      <Link href={`/cidades/${cidade.id}`} className="btn btn-primary">
-                        Saiba mais
-                      </Link>
-                  </div>
+        {cidadesFiltradas.length > 0 ? (
+          cidadesFiltradas.map((cidade) => (
+            <div key={cidade.id} className="col-12 col-md-6 col-lg-4 mb-4 d-flex">
+              <div className="card h-100 shadow-sm w-100">
+                <img 
+                  src={cidade.imagem}
+                  alt={cidade.nome}
+                  className="card-img-top"
+                  onError={(e) => {
+                    e.currentTarget.onerror = null; // Evita loops de erro
+                    e.currentTarget.src = 'https://placehold.co/400x400/ccc/fff?text=Imagem+Indisponível'; // Imagem padrão
+                  }}
+                  style={{ height: '200px', objectFit: 'cover' }}
+                />
+                <div className="card-body d-flex flex-column">
+                  <h5 className="card-title">{cidade.nome}</h5>
+                  <p className="card-text">{cidade.descricao.substring(0, 120)}...</p>
+                  <div className="text-center mt-auto">
+                    {/* O link agora leva para a página de detalhes da cidade específica */}
+                    <Link href={`/cidades/${cidade.id}`} className="btn btn-primary">
+                      Saiba Mais
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -82,7 +81,7 @@ export default function ListaCidades({ cidades }: ListaLocaisProps) {
           ))
         ) : (
           <div className="col-12">
-            <p className="text-center text-muted">Nenhum cidade encontrada com esse nome.</p>
+            <p className="text-center text-muted">Nenhuma cidade encontrada com esse nome.</p>
           </div>
         )}
       </div>

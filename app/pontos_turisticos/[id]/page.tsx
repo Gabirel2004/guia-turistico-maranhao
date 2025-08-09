@@ -1,10 +1,9 @@
 // Em: app/cidades/[id]/page.tsx
 
-// 1. Este ficheiro agora é um Componente de Servidor (sem "use client")
-import { cidades } from '@/data/Cidades';
+import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-// 2. Importamos o novo componente que terá a parte interativa
+// Importamos o nosso componente de cliente que terá a parte interativa
 import ListaDePontos from '../../componentes/ListaDePontos';
 
 type PageProps = {
@@ -13,18 +12,23 @@ type PageProps = {
   };
 };
 
-function getCidadeData(id: string) {
-  const cidade = cidades.find((item) => item.id === id);
+// A página agora é um componente de servidor, responsável apenas por buscar dados
+export default async function PaginaDaCidade({ params }: PageProps) {
+  // 1. Buscamos os dados da cidade e dos seus pontos turísticos aqui, no servidor.
+  const cidade = await prisma.cidade.findUnique({
+    where: {
+      id: params.id,
+    },
+    include: {
+      // Pedimos ao Prisma para incluir os pontos turísticos relacionados
+      pontos_turisticos: true,
+    },
+  });
+
+  // Se a cidade não for encontrada, mostramos um erro 404
   if (!cidade) {
     notFound();
   }
-  return cidade;
-}
-
-// A página agora é um componente de servidor, responsável apenas por buscar dados
-export default function PaginaDaCidade({ params }: PageProps) {
-  // 3. Buscamos os dados da cidade aqui, no servidor.
-  const cidade = getCidadeData(params.id);
 
   return (
     <>
@@ -34,8 +38,8 @@ export default function PaginaDaCidade({ params }: PageProps) {
       </header>
 
       <main className="container">
-
-        <ListaDePontos pontos={cidade.pontos_turisticos} />
+        {/* 2. Passamos a lista de pontos turísticos para o nosso Componente de Cliente */}
+        <ListaDePontos pontos={cidade.pontos_turisticos} cidadeId={cidade.id} />
         
         <div className="text-center mt-5">
           <Link href="/" className="btn btn-primary btn-lg">

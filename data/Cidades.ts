@@ -21,10 +21,10 @@ export const cidades = [
         localizacao: 'Av. Dom Pedro II, S/N - Centro, São Luís - MA'
       },
       {
-        nome: 'Teatro Arthur Azevedo',
-        descricao: 'Um dos teatros mais antigos do Brasil, com uma arquitetura neoclássica e interior luxuoso.',
-        imagem: 'https://www.agenciasaoluis.com.br/imagens/noticias/202105/29052021_114328_1200.jpg',
-        localizacao: 'R. do Sol, 180 - Centro, São Luís - MA'
+        nome: 'Praia do Calhau',
+        descricao: 'Uma das praias urbanas mais famosas de São Luís, com uma extensa faixa de areia e muitas opções de bares e restaurantes.',
+        imagem: 'https://www.melhoresdestinos.com.br/wp-content/uploads/2020/03/praias-sao-luis-maranhao-calhau.jpg',
+        localizacao: 'Avenida Litorânea, São Luís - MA'
       }
     ]
   },
@@ -113,10 +113,56 @@ export const cidades = [
         localizacao: 'Centro Histórico, Alcântara - MA'
       },
       {
-        nome: 'Festa do Divino',
-        descricao: 'Uma das mais tradicionais festas religiosas do Brasil, que acontece 50 dias após a Páscoa.',
-        imagem: 'https://www.oimparcial.com.br/app/uploads/2022/05/festa-do-divino-em-alcantara.jpg',
+        nome: 'Centro de Lançamento de Alcântara',
+        descricao: 'A base de lançamento de foguetes do Brasil, um contraste fascinante entre a história e a tecnologia de ponta.',
+        imagem: 'https://www.defesaaereanaval.com.br/wp-content/uploads/2020/01/Centro-de-Lan%C3%A7amento-de-Alc%C3%A2ntara-CLA-foto-Agencia-Espacial-Brasileira.jpg',
         localizacao: 'Alcântara - MA'
+      }
+    ]
+  },
+  {
+    id: 'sao-jose-de-ribamar',
+    nome: 'São José de Ribamar',
+    tipo: 'Cidade',
+    imagem: 'https://www.saojosederibamar.ma.gov.br/imagens/noticias/202209/01092022_105943_1200.jpg',
+    descricao: 'Um dos mais importantes centros de peregrinação religiosa do Nordeste, dedicado a São José. A cidade também possui praias e uma forte tradição cultural.',
+    localizacao: 'Norte do Maranhão (Ilha de Upaon-Açu)',
+    melhor_epoca: 'Setembro, durante o grande festejo de São José.',
+    pontos_turisticos: [
+      {
+        nome: 'Santuário de São José de Ribamar',
+        descricao: 'Um complexo religioso que atrai milhares de fiéis todos os anos, com uma estátua imponente do santo padroeiro.',
+        imagem: 'https://www.saojosederibamar.ma.gov.br/imagens/noticias/202308/30082023_101538_1200.jpg',
+        localizacao: 'Centro, São José de Ribamar - MA'
+      },
+      {
+        nome: 'Praia de Panaquatira',
+        descricao: 'Uma praia extensa com uma larga faixa de areia na maré baixa, ideal para caminhadas e para relaxar.',
+        imagem: 'https://media-cdn.tripadvisor.com/media/photo-s/19/2b/9c/e8/vista-da-praia-de-panaquatira.jpg',
+        localizacao: 'Panaquatira, São José de Ribamar - MA'
+      }
+    ]
+  },
+  {
+    id: 'caxias',
+    nome: 'Caxias',
+    tipo: 'Cidade',
+    imagem: 'https://www.caxias.ma.gov.br/wp-content/uploads/2021/06/imagem-aerea-caxias-ma-2.jpg',
+    descricao: 'Conhecida como a "Princesa do Sertão", Caxias tem um rico património histórico e cultural, sendo o berço de intelectuais como o poeta Gonçalves Dias.',
+    localizacao: 'Leste Maranhense',
+    melhor_epoca: 'De junho a novembro, período com menos chuvas.',
+    pontos_turisticos: [
+      {
+        nome: 'Memorial da Balaiada',
+        descricao: 'Um museu dedicado a um dos mais importantes movimentos populares do Brasil, a Balaiada, que ocorreu na região.',
+        imagem: 'https://www.caxias.ma.gov.br/wp-content/uploads/2021/08/memorial-da-balaiada-caxias-ma.jpg',
+        localizacao: 'Morro do Alecrim, Caxias - MA'
+      },
+      {
+        nome: 'Igreja de Nossa Senhora da Conceição e São José',
+        descricao: 'A igreja matriz da cidade, com uma bela arquitetura e um importante marco histórico e religioso.',
+        imagem: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/13/Igreja_Matriz_de_Nossa_Senhora_da_Concei%C3%A7%C3%A3o_e_S%C3%A3o_Jos%C3%A9_-_Caxias%2C_Maranh%C3%A3o.jpg/1200px-Igreja_Matriz_de_Nossa_Senhora_da_Concei%C3%A7%C3%A3o_e_S%C3%A3o_Jos%C3%A9_-_Caxias%2C_Maranh%C3%A3o.jpg',
+        localizacao: 'Praça da Matriz, Caxias - MA'
       }
     ]
   }

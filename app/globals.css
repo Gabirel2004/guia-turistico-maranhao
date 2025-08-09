@@ -1,34 +1,20 @@
-@import "tailwindcss";
+/* Em: app/globals.css */
 
-
-h1 {
-  font-size: 2rem;
-  font-family: var(--font-montserratt);
-  font-weight: 700; 
-  color: #333;
-}
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Removemos todas as configurações de Tailwind e temas que estavam a causar erros. */
 
 body {
-  background:  #f9e3e3;
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Aplicamos a fonte Poppins (definida em layout.tsx) como a fonte padrão do site. */
+  font-family: var(--font-poppins), sans-serif;
+  
+  /* Você pode definir uma cor de fundo padrão aqui, se quiser.
+     A classe 'bg-light' do Bootstrap no seu layout.tsx também controla isto.
+  */
+  background-color: #f8f9fa; /* Um cinza claro padrão */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  /* Aplicamos a fonte Montserrat (definida em layout.tsx) a todos os títulos. */
+  /* CORREÇÃO: O nome da variável estava com um 't' a mais. */
+  font-family: var(--font-montserrat), sans-serif;
+  font-weight: 700; /* Definimos um peso de negrito para os títulos */
 }
