@@ -5,29 +5,18 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import ListaDePontos from '../../componentes/ListaDePontos';
 
-// Definimos o tipo de dados que a página vai receber
-type PageProps = {
-  params: {
-    id: string;
-  };
-};
-
-// A página é um componente de servidor, responsável apenas por buscar dados
-export default async function PaginaDaCidade({ params }: PageProps) {
+export default async function PaginaDaCidade({
+  params,
+}: {
+  params: { id: string };
+}) {
   const { id } = params;
 
-  // Buscamos os dados da cidade e dos seus pontos turísticos aqui, no servidor.
   const cidade = await prisma.cidade.findUnique({
-    where: {
-      id: id,
-    },
-    include: {
-      // Pedimos ao Prisma para incluir os pontos turísticos relacionados
-      pontos_turisticos: true,
-    },
+    where: { id },
+    include: { pontos_turisticos: true },
   });
 
-  // Se a cidade não for encontrada, mostramos um erro 404
   if (!cidade) {
     notFound();
   }
@@ -40,10 +29,8 @@ export default async function PaginaDaCidade({ params }: PageProps) {
       </header>
 
       <main className="container my-5">
-        {/* Bloco Principal com os Detalhes da Cidade */}
         <div className="card border-0 shadow-lg mb-5">
           <div className="row g-0">
-            {/* Coluna da Esquerda: Imagem da Cidade */}
             <div className="col-lg-6">
               <img
                 src={cidade.imagem}
@@ -52,13 +39,11 @@ export default async function PaginaDaCidade({ params }: PageProps) {
                 style={{ objectFit: 'cover' }}
               />
             </div>
-
-            {/* Coluna da Direita: Informações da Cidade */}
             <div className="col-lg-6 d-flex flex-column p-5">
               <h1 className="display-4 fw-bold">{cidade.nome}</h1>
               <p className="lead text-muted mb-4">{cidade.tipo}</p>
               <p className="fs-5 mb-4">{cidade.descricao}</p>
-              
+
               <div className="card bg-light border-0">
                 <div className="card-body">
                   <h5 className="card-title fw-bold">Detalhes</h5>
@@ -69,9 +54,9 @@ export default async function PaginaDaCidade({ params }: PageProps) {
                     {cidade.melhor_epoca && (
                       <li><strong>Melhor Época:</strong> {cidade.melhor_epoca}</li>
                     )}
-                     <li>
-                       <strong>Pontos Turísticos:</strong> {cidade.pontos_turisticos.length}
-                     </li>
+                    <li>
+                      <strong>Pontos Turísticos:</strong> {cidade.pontos_turisticos.length}
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -79,12 +64,11 @@ export default async function PaginaDaCidade({ params }: PageProps) {
           </div>
         </div>
 
-        {/* Novo Bloco: Lista de Pontos Turísticos da Cidade */}
         <div className="mt-5">
-            <h2 className="text-center display-5 mb-4">Explore {cidade.nome}</h2>
-            <ListaDePontos pontos={cidade.pontos_turisticos} cidadeId={cidade.id} />
+          <h2 className="text-center display-5 mb-4">Explore {cidade.nome}</h2>
+          <ListaDePontos pontos={cidade.pontos_turisticos} cidadeId={cidade.id} />
         </div>
-        
+
         <div className="text-center mt-5">
           <Link href="/" className="btn btn-primary btn-lg">
             &larr; Ver Todas as Cidades
