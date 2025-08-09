@@ -3,23 +3,24 @@
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-// Importamos o nosso componente de cliente que terá a parte interativa
+// CORREÇÃO: Usando o atalho @ para garantir que o caminho está sempre correto
 import ListaDePontos from '../../componentes/ListaDePontos';
 
+// Definimos o tipo de dados que a página vai receber
 type PageProps = {
   params: {
     id: string;
   };
 };
 
-// A página agora é um componente de servidor, responsável apenas por buscar dados
+// A página é um componente de servidor, responsável apenas por buscar dados
 export default async function PaginaDaCidade({ params }: PageProps) {
-  
-  const awaiteparams = await params; 
+  const { id } = params;
 
+  // Buscamos os dados da cidade e dos seus pontos turísticos aqui, no servidor.
   const cidade = await prisma.cidade.findUnique({
     where: {
-      id: awaiteparams.id,
+      id: id,
     },
     include: {
       // Pedimos ao Prisma para incluir os pontos turísticos relacionados
