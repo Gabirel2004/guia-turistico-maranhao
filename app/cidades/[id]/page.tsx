@@ -3,7 +3,6 @@
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-// CORREÇÃO: Usando o atalho @ para garantir que o caminho está sempre correto
 import ListaDePontos from '../../componentes/ListaDePontos';
 
 // Definimos o tipo de dados que a página vai receber
