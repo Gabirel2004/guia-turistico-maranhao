@@ -60,10 +60,6 @@ export default function ListaCidades({ cidades }: ListaCidadesProps) {
                   src={cidade.imagem}
                   alt={cidade.nome}
                   className="card-img-top"
-                  onError={(e) => {
-                    e.currentTarget.onerror = null; // Evita loops de erro
-                    e.currentTarget.src = 'https://placehold.co/400x400/ccc/fff?text=Imagem+Indisponível'; // Imagem padrão
-                  }}
                   style={{ height: '200px', objectFit: 'cover' }}
                 />
                 <div className="card-body d-flex flex-column">
